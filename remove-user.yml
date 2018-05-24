@@ -1,0 +1,10 @@
+---
+- hosts: public
+  tasks: 
+    - name: Ensure public access user is present
+      win_user:
+         name: All
+         password: password
+         state: absent
+         groups:
+            - Users

@@ -1,0 +1,39 @@
+---
+- hosts: public
+  tasks:
+    - name: check whoami
+      become_method: runas
+      become: yes
+      become_user: all
+      vars:
+         ansible_become_pass: password
+      become_flags: logon_flags=with_profile
+      win_command: whoami
+      register: outStuff2
+
+    - debug: var=outStuff2
+    - name: Set background image for user All
+      become_method: runas
+      become: yes
+      become_user: all
+      become_flags: logon_flags=with_profile
+      win_regedit:
+        path: '{{ item.path }}'
+        name: '{{ item.name }}'
+        data: '{{ item.data }}'
+        type: '{{ item.type }}'
+      with_items:
+      - path: HKCU:\Control Panel\Desktop
+        name: Wallpaper
+        data: 'C:\Windows\Web\Wallpaper\Theme1\img1.jpg'
+        type: string
+      - path: HKCU:\Control Panel\Desktop
+        name: WallpaperStyle
+        data: 10
+        type: string
+      - path: HKCU:\Control Panel\Colors
+        name: Background
+        data: '21 117 35'
+        type: string
+
+

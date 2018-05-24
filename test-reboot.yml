@@ -1,0 +1,5 @@
+---
+- hosts: public
+  tasks:
+  - name: "reeboot"
+    win_reboot:

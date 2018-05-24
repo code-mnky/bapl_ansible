@@ -1,0 +1,21 @@
+---
+- hosts: public
+  serial: 1
+  gather_facts: no
+  become_method: runas
+  tasks:
+  - name: as default user
+    win_shell: whoami    
+    register: outStuff
+
+  - debug: var=outStuff
+
+  - name: check login as All user
+    become_method: runas
+    become: yes
+    become_user: all
+    become_flags: logon_flags=with_profile
+    win_command: whoami
+    register: outStuff2
+
+  - debug: var=outStuff2

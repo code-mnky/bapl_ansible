@@ -1,0 +1,8 @@
+---
+- name: test chocolatey with ansible
+  hosts: all
+  tasks:
+    - name: Install Chrome
+      win_chocolatey:
+        name: googlechrome
+        state: present

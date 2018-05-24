@@ -1,0 +1,7 @@
+- hosts: public 
+  tasks:
+    - name: Copy a single file where the source is on the remote host
+      win_copy:
+        src:  C:\Windows\Web\Wallpaper\Theme1\img2.jpg
+        dest: C:\Users\All\Pictures\Saved Pictures\img2.jpg
+        remote_src: True

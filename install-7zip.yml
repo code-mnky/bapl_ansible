@@ -1,0 +1,8 @@
+---
+- name: test chocolatey with ansible
+  hosts: all
+  tasks:
+    - name: Install 7-Zip
+      win_chocolatey:
+        name: 7zip
+        state: present

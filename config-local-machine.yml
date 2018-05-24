@@ -1,0 +1,16 @@
+---
+- hosts: public
+  tasks:
+    - name: Set some Local Machine configurations
+      win_regedit:
+          path: '{{ item.path }}'
+          name: '{{ item.name }}'
+          data: '{{ item.data|default(None) }}'
+          type: '{{ item.type|default("dword") }}'
+          state: '{{ item.state|default("present") }}'      
+      with_items:
+      # Disable Cortana (Windows 10 Anniversary+)
+      - path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search
+        name: AllowCortana
+        data: 0
+
