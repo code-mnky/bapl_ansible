@@ -1,10 +1,12 @@
 ---
 - hosts: public
   tasks: 
-    - name: Ensure public access user is present
+#    - name: make sure BAPLAdmin (nonstandard) is gone
+#      win_user:
+#        name: BAPLAdmin
+#        state: absent
+
+    - name: Ensure public access user is gone
       win_user:
          name: All
-         password: password
          state: absent
-         groups:
-            - Users

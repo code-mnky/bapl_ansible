@@ -1,0 +1,52 @@
+- hosts: public
+  tasks:
+  - win_shell: |
+      Get-AppxPackage -User All -Name {{ item }} | Remove-AppxPackage
+      #Get-AppxPackage -Name {{ item }} | Remove-AppxPackage
+    with_items:
+    - Microsoft.Windows.Cortana
+    - 4DF9E0F8.Netflix
+    - 9E2F88E3.Twitter
+    - '*CandyCrush*'
+#    - E046963F.LenovoCompanion
+#    - Microsoft.3DBuilder
+    - Microsoft.Advertising.Xaml
+#    - Microsoft.Appconnector
+    - Microsoft.BingFinance
+    - Microsoft.BingNews
+    - Microsoft.BingSports
+    - Microsoft.BingWeather
+    - Microsoft.CommsPhone
+    - Microsoft.ConnectivityStore
+    - Microsoft.DesktopAppInstaller
+    - Microsoft.Getstarted
+    - Microsoft.Messaging
+#    - Microsoft.MicrosoftOfficeHub
+#    - Microsoft.MicrosoftSolitaireCollection
+    - Microsoft.Office.OneNote
+    - Microsoft.Office.Sway
+    - Microsoft.OneConnect
+    - Microsoft.People
+    - Microsoft.Services.Store.Engagement
+    - Microsoft.SkypeApp
+    - Microsoft.StorePurchaseApp
+#    - Microsoft.WindowsAlarms
+#    - Microsoft.WindowsCamera
+    - Microsoft.windowscommunicationsapps
+#    #- Microsoft.WindowsDVDPlayer
+    - Microsoft.WindowsFeedbackHub
+#    - Microsoft.WindowsMaps
+    - Microsoft.WindowsPhone
+    - Microsoft.Windows.Photos
+    - Microsoft.WindowsStore
+    - Microsoft.XboxApp
+    - Microsoft.XboxIdentityProvider
+    - Microsoft.ZuneMusic
+    - Microsoft.ZuneVideo
+    - TuneIn.TuneInRadio
+    register: appx
+#    changed_when: "'Deployment operation progress: ' in appx.stderr"
+##    failed_when: no
+#    tags:
+#    - appx
+#    - windows

@@ -1,0 +1,110 @@
+- hosts: public
+  gather_facts: no
+  tasks:
+  - name: check login as All user
+    become_method: runas
+    become: yes
+    become_user: all
+    become_flags: logon_flags=with_profile
+    win_command: whoami
+    register: outStuff2
+
+  - debug: var=outStuff2
+
+  - name: Configuration
+    become_method: runas
+    become: yes
+    become_user: all
+    become_flags: logon_flags=with_profile
+    win_regedit:
+      path: '{{ item.path }}'
+      name: '{{ item.name }}'
+      data: '{{ item.data|default(None) }}'
+      type: '{{ item.type|default("string") }}'
+      state: '{{ item.state|default("present") }}'
+    with_items:
+
+    # Remove OneDrive from Run hook for new users
+    - path: HKU:\Default\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+      name: OneDrive
+      state: absent
+
+    # Remove OneDrive from Run hook for current user
+    - path: HKLM:\Software\Microsoft\Windows\CurrentVersion\Run
+      name: OneDrive
+      state: absent
+
+    # Remove OneDrive from Explorer Name Space Tree (32bit)
+    - path: HKCR:\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}
+      name: System.IsPinnedToNameSpaceTree
+      data: 0
+      type: dword
+
+    # Remove OneDrive from Explorer Name Space Tree (64bit)
+    - path: HKCR:\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}
+      name: System.IsPinnedToNameSpaceTree
+      data: 0
+      type: dword
+
+    - path: HKLM:\Software\Policies\Microsoft\Windows\OneDrive
+      name: DisableFileSyncNGSC
+      data: 1
+      type: dword
+
+    - path: HKLM:\Software\Wow6432Node\Policies\Microsoft\Windows\OneDrive
+      name: DisableFileSyncNGSC
+      data: 1
+      type: dword
+    tags:
+    - onedrive
+
+  - name: Remove OneDrive (1)
+    become_method: runas
+    become: yes
+    become_user: all
+    become_flags: logon_flags=with_profile
+    win_shell: |
+      taskkill.exe /F /IM OneDrive.exe
+    register: taskkill
+    changed_when: taskkill.rc == 0 and 'The process "OneDrive.exe" not found.' not in taskkill.stderr
+    failed_when: taskkill.rc != 0 and 'The process "OneDrive.exe" not found.' not in taskkill.stderr
+    ignore_errors: yes
+    tags:
+    - onedrive
+
+  - name: Remove OneDrive (2)
+    become_method: runas
+    become: yes
+    become_user: all
+    become_flags: logon_flags=with_profile
+    win_shell: |
+      %SYSTEMROOT%\System32\OneDriveSetup.exe /uninstall
+      %SYSTEMROOT%\SysWOW64\OneDriveSetup.exe /uninstall
+    ignore_errors: yes
+    tags:
+    - onedrive
+
+  - name: check login as All user
+    become_method: runas
+    become: yes
+    become_user: all
+    become_flags: logon_flags=with_profile
+    win_command: whoami
+    register: outStuff2
+
+  - debug: var=outStuff2
+
+  - name: Remove OneDrive leftovers
+    become_method: runas
+    become: yes
+    become_user: all
+    become_flags: logon_flags=with_profile
+    win_file:
+      path: '{{ item }}'
+      state: absent
+    with_items:
+    - '%LOCALAPPDATA%\Microsoft\OneDrive'
+    - '%PROGRAMDATA%\Microsoft OneDrive'
+    - '%USERPROFILE%\OneDrive'
+    - 'C:\OneDriveTemp'
+    - '%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk'
