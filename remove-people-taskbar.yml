@@ -1,0 +1,10 @@
+---
+- hosts: public
+  gather_facts: no
+  tasks:
+
+  - name: Add explorer policy
+    win_regedit:
+      path: HKU:\S-1-5-21-3887345490-991611126-1046385616-1002\Software\Policies\Microsoft\Windows\
+      name: Explorer!HidePeopleBar
+

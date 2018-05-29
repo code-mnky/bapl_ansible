@@ -1,0 +1,14 @@
+- hosts: public
+#  serial: 1
+  gather_facts: no
+#  become_method: runas
+  tasks:
+  # Filters can deal with text too, but since it's Powershell, 
+  # let's use structured data- ConvertTo-Json gives us something Ansible
+  # can read with the from_json filter
+  - raw: New-Object System.Security.Principal.NTAccount('All').Translate([System.Security.Principal.SecurityIdentifier]).Value | ConvertTo-Json -depth 1
+    register: regUser
+
+  # use from_json to read the stdout from raw and convert to a dictionary 
+  # we can pull values from
+  - debug: msg="User is {{ (regUser.stdout | from_json).NextHop }}"

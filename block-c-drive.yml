@@ -1,0 +1,20 @@
+---
+- hosts: public
+  gather_facts: no
+  tasks:
+  - name: Get ID for the All user on the machine
+    win_shell: $AdObj = New-Object System.Security.Principal.NTAccount('All') | $strSID = $AdObj.Translate([System.Security.Principal.SecurityIdentifier]) | $strSID.Value
+    register: allUser
+  - debug: var=allUser
+
+  - name: Add explorer policy
+    win_regedit:
+      path: HKU:\S-1-5-21-3887345490-991611126-1046385616-1002\Software\Microsoft\Windows\CurrentVersion\Policies
+      name: Explorer
+
+  - name: Add or update registry path to block All public user access to c drive 
+    win_regedit:
+      path: HKU:\S-1-5-21-3887345490-991611126-1046385616-1002\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer
+      name: NoViewOnDrive
+      data: 4
+      type: dword

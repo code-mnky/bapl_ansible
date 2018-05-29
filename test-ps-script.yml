@@ -1,0 +1,8 @@
+- name: test
+  hosts: public
+  tasks:
+    - name: testing
+      script: test.psl
+      register: regUserId
+
+    - debug: var=regUserId

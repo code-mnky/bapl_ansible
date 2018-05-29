@@ -1,0 +1,8 @@
+- name: copy custom facts file
+  win_copy:
+  src: softwarefacts.ps1
+  dest: "C:\\Scripts\\facts"
+
+- name: gather extra facts
+  setup:
+  fact_path: "C:\\Scripts\\facts"

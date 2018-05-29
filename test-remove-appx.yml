@@ -12,31 +12,25 @@
   - debug: var=outStuff2
  
   - name: Remove all Appx packages for user all
-    win_shell: |
-      Get-AppxPackage | Remove-AppxPackage
-    register: appx
-    changed_when: "'Deployment operation progress: ' in appx.stderr"
-    failed_when: no
     become_method: runas
     become: yes
     become_user: all
-    tags: appx
-
-  - name: Remove all Appx packages for user all
+    become_flags: logon_flags=with_profile    
     win_shell: |
-      Get-AppxPackage -User all | Remove-AppxPackage
+      Get-AppxPackage | Remove-AppxPackage
     register: appx
     changed_when: "'Deployment operation progress: ' in appx.stderr"
     failed_when: no
     tags: appx
 
   - name: Remove all Appx provisioned packages
+    become_method: runas
+    become: yes
+    become_user: all
+    become_flags: logon_flags=with_profile
     win_shell: |
       Get-AppxProvisionedPackage -Online | Remove-AppxProvisionedPackage -Online
     register: appx
 #    changed_when: "'Deployment operation progress: ' in appx.stderr"
     failed_when: no
-    become_method: runas
-    become: yes
-    become_user: all
     tags: appx

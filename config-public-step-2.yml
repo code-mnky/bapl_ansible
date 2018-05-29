@@ -1,0 +1,2 @@
+- import_playbook: test-remove-appx.yml
+- import_playbook: test-reboot.yml

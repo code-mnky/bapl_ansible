@@ -1,0 +1,6 @@
+Write-host "woof"
+$AdObj = New-Object System.Security.Principal.NTAccount('All')
+$strSID = $AdObj.Translate([System.Security.Principal.SecurityIdentifier])
+$strSID.Value
+
+
