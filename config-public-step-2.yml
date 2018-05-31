@@ -1,2 +1,4 @@
 - import_playbook: test-remove-appx.yml
+- import_playbook: block-c-drive-user.yml
+- import_playbook: remove-people-taskbar-user.yml
 - import_playbook: test-reboot.yml

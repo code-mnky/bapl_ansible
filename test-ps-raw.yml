@@ -1,0 +1,5 @@
+- name: test raw psl
+  raw: Write-host "Woof!"
+  register: outStuff
+
+-debug: outStuff

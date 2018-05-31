@@ -1,0 +1,14 @@
+- name: test win_shell
+  hosts: public
+  tasks:
+  - win_shell: |
+       Function getRegUserId {
+       $AdObj = New-Object System.Security.Principal.NTAccount('All')
+       $strSID = $AdObj.Translate([System.Security.Principal.SecurityIdentifier])
+       Write-Verbose -Message "USERID= $strSID.value"
+       $strSID.Value
+       }
+       getRegUserId
+    register: regUserId
+  - debug: msg="{{regUserId.stdout_lines[0]}}"
+

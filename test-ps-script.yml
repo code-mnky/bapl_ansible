@@ -2,7 +2,7 @@
   hosts: public
   tasks:
     - name: testing
-      script: test.psl
+      script: ./test.psl
       register: regUserId
 
     - debug: var=regUserId

@@ -1,6 +1,7 @@
-Write-host "woof"
-$AdObj = New-Object System.Security.Principal.NTAccount('All')
-$strSID = $AdObj.Translate([System.Security.Principal.SecurityIdentifier])
-$strSID.Value
+$strComputer = $Host
+Clear
+$RAM = WmiObject Win32_ComputerSystem
+$MB = 1048576
 
+"Installed Memory: " + [int]($RAM.TotalPhysicalMemory /$MB) + " MB"
 

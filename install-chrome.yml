@@ -1,8 +1,9 @@
 ---
-- name: test chocolatey with ansible
+- name: install chrome with chocolatey
   hosts: all
   tasks:
     - name: Install Chrome
       win_chocolatey:
         name: googlechrome
         state: present
+      ignore_errors: yes
