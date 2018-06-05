@@ -1,0 +1,28 @@
+---
+- hosts: public
+  gather_facts: no
+  tasks:
+  - win_shell: |
+       Function getRegUserId {
+       $AdObj = New-Object System.Security.Principal.NTAccount('All')
+       $strSID = $AdObj.Translate([System.Security.Principal.SecurityIdentifier])
+       $strSID.Value
+       }
+       getRegUserId
+    register: regUserId
+  - debug: msg="{{regUserId.stdout_lines[0]}}"
+
+  - debug: msg="Setting HKU:\{{regUserId.stdout_lines[0]}}\Software\Microsoft\Windows\CurrentVersion\Policies"
+
+  - name: Add explorer policy
+    win_regedit:
+      path: HKU:\{{regUserId.stdout_lines[0]}}\Software\Policies\Microsoft\Windows\
+      name: Explorer
+
+  - name: Add or update registry path to block All public user access to c drive
+    win_regedit:
+      path: HKU:\{{regUserId.stdout_lines[0]}}\Software\Policies\Microsoft\Windows\Explorer
+      name: NoControlPanel
+      data: 1
+      type: dword
+
