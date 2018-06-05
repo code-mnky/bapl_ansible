@@ -1,4 +1,6 @@
+- import_playbook: test-set-user_desktop.yml
 - import_playbook: test-remove-appx.yml
 - import_playbook: block-c-drive-user.yml
 - import_playbook: remove-people-taskbar-user.yml
+- import_playbook: setup-all-user-lowPriv.yml
 - import_playbook: test-reboot.yml

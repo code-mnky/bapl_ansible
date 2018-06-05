@@ -1,28 +1,21 @@
 ---
+- name: Remove people icon from taskbar
 - hosts: public
+  become_method: runas
+  become_user: all
+  become:
   gather_facts: no
-  tasks:
-  - win_shell: |
-       Function getRegUserId {
-       $AdObj = New-Object System.Security.Principal.NTAccount('All')
-       $strSID = $AdObj.Translate([System.Security.Principal.SecurityIdentifier])
-       $strSID.Value
-       }
-       getRegUserId
-    register: regUserId
-  - debug: msg="{{regUserId.stdout_lines[0]}}"
 
-  - debug: msg="Setting HKU:\{{regUserId.stdout_lines[0]}}\Software\Microsoft\Windows\CurrentVersion\Policies"
-
-  - name: Add explorer policy
+  - name: Add explorer policy to the path
     win_regedit:
-      path: HKU:\{{regUserId.stdout_lines[0]}}\Software\Policies\Microsoft\Windows\
-      name: Explorer
+      path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
+      state: present
 
-  - name: Add or update registry path to block All public user access to c drive
+  - name: Add or update HidePeopleBar
     win_regedit:
-      path: HKU:\{{regUserId.stdout_lines[0]}}\Software\Policies\Microsoft\Windows\Explorer
+      path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
       name: HidePeopleBar
       data: 1
       type: dword
+      state: present
 

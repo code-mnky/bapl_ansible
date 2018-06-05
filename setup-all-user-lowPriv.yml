@@ -11,5 +11,7 @@
          name: All
          password: password
          state: present
+         user_cannot_change_password: yes
          groups:
             - Users
+         group_action: replace

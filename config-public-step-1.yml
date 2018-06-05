@@ -4,5 +4,4 @@
 - import_playbook: install-7zip.yml
 - import_playbook: install-chrome.yml
 - import_playbook: install-firefox.yml
-- import_playbook: setup-user.yml
-- import_playbook: test-set-user_desktop.yml
+- import_playbook: setup-all-user-admPriv.yml

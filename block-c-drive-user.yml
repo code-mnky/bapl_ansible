@@ -1,27 +1,27 @@
 ---
-- hosts: public
+- name: block public use of C drive [block-c-drive-user.yml]
+  hosts: public
+  serial: 1
   gather_facts: no
+  become_method: runas
+  become: yes
+  become_user: all
   tasks:
-  - win_shell: |
-       Function getRegUserId {
-       $AdObj = New-Object System.Security.Principal.NTAccount('All')
-       $strSID = $AdObj.Translate([System.Security.Principal.SecurityIdentifier])
-       $strSID.Value
-       }
-       getRegUserId
-    register: regUserId
-  - debug: msg="{{regUserId.stdout_lines[0]}}"
+  - name: verify current user
+    win_command: whoami
+    register: currUser
 
-  - debug: msg="Setting HKU:\{{regUserId.stdout_lines[0]}}\Software\Microsoft\Windows\CurrentVersion\Policies"
+  - debug: var=currUser
 
   - name: Add explorer policy
     win_regedit:
-      path: "HKU:\\{{regUserId.stdout_lines[0]}}\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies"
-      name: Explorer
+      path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
+      state: present
 
   - name: Add or update registry path to block All public user access to c drive 
     win_regedit:
-      path: "HKU:\\{{regUserId.stdout_lines[0]}}\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
+      path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
       name: NoViewOnDrive
       data: 4
       type: dword
+      state: absent
