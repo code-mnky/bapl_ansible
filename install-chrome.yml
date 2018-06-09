@@ -1,5 +1,6 @@
 ---
 - name: install chrome with chocolatey
+  gather_facts: no
   hosts: all
   tasks:
     - name: Install Chrome

@@ -14,7 +14,7 @@
   - name: Add or update registry path to block All public user access to c drive 
     win_regedit:
       path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
-      name: NoViewOnDrive
-      data: 4
+      name: NoControlPanel
+      data: 1
       type: dword
       state: present

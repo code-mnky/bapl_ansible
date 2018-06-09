@@ -1,21 +1,17 @@
 ---
 - name: Remove people icon from taskbar
-- hosts: public
+  hosts: public
   become_method: runas
   become_user: all
-  become:
+  become: yes
   gather_facts: no
+  tasks:
 
-  - name: Add explorer policy to the path
+  - name: Add or update PeopleBand
     win_regedit:
-      path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
-      state: present
-
-  - name: Add or update HidePeopleBar
-    win_regedit:
-      path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
-      name: HidePeopleBar
-      data: 1
+      path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\People"
+      name: PeopleBand
+      data: 0
       type: dword
       state: present
 

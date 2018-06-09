@@ -1,0 +1,49 @@
+- name: Remove selected Windows default Appx applications
+  hosts: public
+  become_method: runas
+  become: yes
+  become_user: all
+  become_flags: logon_flags=with_profile 
+  tasks:
+  - win_shell: |
+      Get-AppxPackage -User All -Name {{ item }} | Remove-AppxPackage
+    with_items:
+#    - Microsoft.Windows.Cortana
+    - 4DF9E0F8.Netflix
+    - 9E2F88E3.Twitter
+    - '*CandyCrush*'
+    - Microsoft.Appconnector
+#    - Microsoft.BingFinance
+#    - Microsoft.BingNews
+#    - Microsoft.BingSports
+#    - Microsoft.BingWeather
+    - Microsoft.CommsPhone
+    - Microsoft.ConnectivityStore
+    - Microsoft.DesktopAppInstaller
+    - Microsoft.Messaging
+    - Microsoft.MicrosoftStickyNotes
+    - Microsoft.Office.OneNote
+    - Microsoft.OneConnect
+    - Microsoft.Office.Sway
+#    - Microsoft.OneConnect # couldn't seen to find eventhough it was in the app list
+    - Microsoft.People
+    - Microsoft.RemoteDesktop
+#    - Microsoft.Services.Store.Engagement #Solitare depends on this ... leave it
+    - Microsoft.SkypeApp
+    - Microsoft.StorePurchaseApp
+    - Microsoft.windowscommunicationsapps
+    - Microsoft.WindowsFeedbackHub
+    - Microsoft.WindowsPhone
+    - Microsoft.Windows.Photos
+    - Microsoft.WindowsStore #didn't seem to remove??
+    - Microsoft.Xbox.TCUI
+    - Microsoft.XboxApp
+    - Microsoft.XboxGameOverlay
+    - Microsoft.XboxSpeechToTextOverlay
+    - Microsoft.XboxIdentityProvider
+    - Microsoft.ZuneMusic
+    - Microsoft.ZuneVideo
+    - TuneIn.TuneInRadio
+#    - Microsoft.Advertising.Xaml #Solitare depends on this ... leave it
+    register: appx
+  - debug: var=appx

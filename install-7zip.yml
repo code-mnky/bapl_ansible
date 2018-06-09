@@ -1,5 +1,6 @@
 ---
-- name: test chocolatey with ansible
+- name: install 7-zip via chocolatey
+  gather_facts: no
   hosts: all
   tasks:
     - name: Install 7-Zip

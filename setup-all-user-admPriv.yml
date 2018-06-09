@@ -1,10 +1,8 @@
 ---
-- hosts: public
+- name: create All user with elevated privs
+  hosts: public
+  gather_facts: no
   tasks: 
-#    - name: make sure BAPLAdmin (nonstandard) is gone
-#      win_user:
-#        name: BAPLAdmin
-#        state: absent
 
     - name: Ensure public access user is present
       win_user:
@@ -15,3 +13,11 @@
          groups:
             - Users, Administrators
          group_action: replace
+
+#    - name: Check user
+#      become: yes
+#      become_user: all
+#      become_method: runas
+#      win_command: gpresult /r
+#      register: userInfo
+#    - debug: var=userInfo 
