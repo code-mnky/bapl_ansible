@@ -4,5 +4,6 @@
 - import_playbook: block-c-drive-user.yml
 - import_playbook: remove-people-taskbar-user.yml
 - import_playbook: block-controlPanel-user.yml
-#- import_playbook: setup-all-user-lowPriv.yml
+- import_playbook: remove-lockIcon-user.yml
 - import_playbook: test-reboot.yml
+- import_playbook: setup-all-user-lowPriv.yml

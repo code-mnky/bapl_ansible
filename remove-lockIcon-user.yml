@@ -1,0 +1,20 @@
+---
+- name: remove the lock icon from the start menu for the public user
+  hosts: public
+  gather_facts: no
+  become_method: runas
+  become: yes
+  become_user: all
+  tasks:
+#  - name: Add explorer policy key
+#    win_regedit:
+#      path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
+#      state: present
+
+  - name: Add or update registry path to remove the lock icon 
+    win_regedit:
+      path: HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System
+      name: DisableLockWorkstation
+      data: 1
+      type: dword
+      state: present

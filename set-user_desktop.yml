@@ -1,6 +1,6 @@
 ---
-- name Configure basic public user desktop settings
-- hosts: public
+- name: Configure basic public user desktop settings
+  hosts: public
   tasks:
     - name: Set background image for user All
       become_method: runas
