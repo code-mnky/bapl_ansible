@@ -8,6 +8,20 @@
   hosts: public
   gather_facts: false
   tasks:
+    # Search-only, return list of found updates (if any), log to c:\ansible_wu.txt
+    - name: Search updates
+      win_updates:
+        category_names: ['SecurityUpdates','CriticalUpdates','UpdateRollups', 'Updates', 'DefinitionUpdates']
+        state: searched
+        log_path: c:\ansible_wu.txt
+      register: result
+
+    # reboot only if required may have already staged the update and we just need a reboot
+    - win_reboot:
+      pre_reboot_delay: 60
+      msg: Windows needs to reboot to apply updates. Rebooting in 60 seconds.
+      when: result.reboot_required
+
     - name: Running Windows Update
       win_updates:
         category_names: ['SecurityUpdates','CriticalUpdates','UpdateRollups', 'Updates', 'DefinitionUpdates']
@@ -18,5 +32,7 @@
     
     # reboot only if required
     - win_reboot:
-      when: result.reboot_required
+      pre_reboot_delay: 60
+      msg: Windows needs to reboot to apply updates. Rebooting in 60 seconds.
+      when: result.reboot_requireda
 
