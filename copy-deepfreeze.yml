@@ -1,0 +1,15 @@
+- name: Copy Deepfreeze to public machines
+  hosts: public 
+  gather_facts: no
+  tasks:
+    - name: Copy a single file where the source is on the remote host
+      win_copy:
+        src:  C:\Users\BAPL\ Admin\Downloads\Faronics_DFS.zip
+        dest: "C:\\Users\\BAPLAdmin\\Downloads\\"
+        remote_src: False
+
+#    - name: unpack deepfreeze
+#      win_unzip:
+#        src: "C:\\Users\\BAPLAdmin\\Downloads\\Faronics_DFS.zip"
+#        dest: "C:\\Users\\BAPLAdmin\\Downloads\\\Deepfreeze\\"
+#        creates: "C:\\Users\\BAPLAdmin\\Downloads\\Deepfreeze\\"
