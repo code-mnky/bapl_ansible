@@ -8,3 +8,13 @@
         name: googlechrome
         state: present
       ignore_errors: yes
+
+    - name: set Chrome to incognito only
+      win_shortcut:
+        description: The Google Chrome web browser
+        src: 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+        dest: 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Google Chrome.lnk'
+        directory: 'C:\Program Files (x86)\Google\Chrome\Application\'
+        icon: '%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe'
+        hotkey: Ctrl+Alt+C
+        state: present

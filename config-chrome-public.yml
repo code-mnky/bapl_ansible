@@ -1,0 +1,31 @@
+---
+- name: install chrome with chocolatey and set to incognito by default
+  gather_facts: no
+  hosts: public
+  tasks:
+    - name: Install Chrome
+      win_chocolatey:
+        name: googlechrome
+        state: present
+      ignore_errors: yes
+
+    - name: set Chrome to incognito only
+      win_shortcut:
+        description: The Google Chrome web browser
+        src: 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe -incognito'
+        dest: 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Google Chrome.lnk'
+        directory: 'C:\Program Files (x86)\Google\Chrome\Application\'
+        icon: '%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe'
+        hotkey: Ctrl+Alt+C
+        state: present
+
+    - name: set Chrome to incognito only
+      win_shortcut:
+        description: The Google Chrome web browser
+        src: 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe -incognito'
+        dest: 'C:\Users\Public\Public Desktop\Google Chrome.lnk'
+        directory: 'C:\Program Files (x86)\Google\Chrome\Application\'
+        icon: '%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe'
+        hotkey: Ctrl+Alt+C
+        state: present
+

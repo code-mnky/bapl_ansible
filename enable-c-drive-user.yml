@@ -1,0 +1,20 @@
+---
+- name: enable public use of C drive
+  hosts: public
+  gather_facts: no
+  become_method: runas
+  become: yes
+  become_user: all
+  tasks:
+  - name: Add explorer policy key
+    win_regedit:
+      path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
+      state: present
+
+  - name: Add or update registry path to enable All public user access to c drive 
+    win_regedit:
+      path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
+      name: NoViewOnDrive
+      data: 3
+      type: dword
+      state: present
